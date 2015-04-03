@@ -1,0 +1,43 @@
+<div class="container">
+  <p id="notice"><%= notice %></p>
+
+  <p>
+    <strong>Heading : </strong>
+    <%= @post.heading %>
+  </p>
+
+  <p>
+    <strong>Body : </strong>
+    <%= @post.body %>
+  </p>
+
+  <p>
+    <strong>Price : </strong>
+    <%= @post.price %>
+  </p>
+
+  <p><strong>State : </strong><%= @post.state %></p>
+  <p><strong>City : </strong><%= @post.city %></p>
+  <p><strong>Neighbourhood : </strong><%= @post.neighborhood %></p>
+  <p><strong>Zip : </strong><%= @post.zipcode %></p>
+  <p><strong>Phone : </strong><%= @post.phone %></p>
+  <p><strong>Color : </strong><%= @post.paint_color %></p>
+  <p><strong>Drive : </strong><%= @post.drive %></p>
+  <p><strong>Year : </strong><%= @post.year %></p>
+  <p><strong>Flagged Status : </strong><%= @post.flagged_status %></p>
+  <% @images.each do |image| %>
+      <%= image_tag image.url, class: "thumbnail" %>
+    <% end %>
+  <p>
+    <strong>External url : </strong>
+    <%= @post.external_url %>
+  </p>
+
+  <p>
+    <strong>Timestamp : </strong>
+    <%= @post.timestamp %>
+  </p>
+
+  <%= link_to 'Edit', edit_post_path(@post) %> |
+  <%= link_to 'Back', posts_path %>
+</div>
