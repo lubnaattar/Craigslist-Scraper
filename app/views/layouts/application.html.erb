@@ -2,13 +2,18 @@
 <html>
 <head>
   <title>CraigsListScrapper</title>
+  <%= render 'layouts/bootstrapcdn' %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  
 </head>
 <body>
 
+<%= render 'layouts/navbar' %>
+<div class="container-fluid">
 <%= yield %>
-
+</div>
+<%= render 'layouts/footer' %>
 </body>
 </html>

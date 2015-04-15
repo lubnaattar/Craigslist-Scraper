@@ -1,15 +1,22 @@
 Rails.application.routes.draw do
-  resources :advertises
+  #get 'dashboard/home'
+  get 'posts/home'
+  get 'pages/about'
 
-  resources :advertisements
+  get 'pages/contact'
 
-  resources :ads
+  # resources :advertises
 
-  resources :post1s
+  # resources :advertisements
+
+  # resources :ads
+
+  # resources :post1s
 
   resources :posts
 
-  root 'posts#home'
+  #root 'posts#home'
+  root 'dashboard#home'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
