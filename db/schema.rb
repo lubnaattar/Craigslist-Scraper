@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150402235852) do
+ActiveRecord::Schema.define(version: 20150414223443) do
 
   create_table "images", force: true do |t|
     t.text     "url"
@@ -48,6 +48,17 @@ ActiveRecord::Schema.define(version: 20150402235852) do
     t.string   "paint_color"
     t.string   "drive"
     t.integer  "flagged_status"
+    t.string   "model_vehicle"
+    t.string   "make_vehicle"
+    t.string   "type_vehicle"
+    t.string   "title_status"
+    t.string   "fuel_vehicle"
+    t.integer  "rating"
+    t.integer  "isDuplicate"
+    t.string   "mileage"
+    t.string   "transmission"
+    t.string   "account_id"
+    t.string   "source_map_google"
   end
 
 end

@@ -1,0 +1,55 @@
+<div class="filter">
+    <%= form_tag posts_path, method: :get do %>
+
+     <div class ="row">
+       <div class="col-md-2">
+            <%= label_tag :year %>
+        </div>
+            <!--<%= text_field_tag :year%> -->
+        
+       <div class="col-md-2">
+               <%= label_tag :price %>      
+        </div>
+        <div class="col-md-2">
+               <%= label_tag :fuel_vehicle %>      
+        </div>
+        <div class="col-md-2">
+               <%= label_tag :make_vehicle %>      
+        </div>
+        <div class="col-md-2">
+               <%= label_tag :model_vehicle %>      
+        </div>
+     </div>
+
+     <div class ="row">
+         <div class="col-md-2">
+           <%= text_field_tag :year, params[:year], class: "form-control input-sm" %>  <!-- Autopopulate the filter-->
+          </div>
+         
+          <div class="col-md-2">
+                     <%= text_field_tag :price, params["price"], class: "form-control input-sm" %>
+          </div>  
+          <div class="col-md-2">
+                     <%= text_field_tag :fuel_vehicle, params["fuel_vehicle"], class: "form-control input-sm" %>
+          </div>  
+          <div class="col-md-2">
+                     <%= text_field_tag :make_vehicle, params["make_vehicle"], class: "form-control input-sm" %>
+          </div>  
+          <div class="col-md-2">
+                     <%= text_field_tag :model_vehicle, params["model_vehicle"], class: "form-control input-sm" %>
+          </div>  
+             
+     </div>
+
+     <br/>
+     <div class ="row">
+         <div class="col-md-2">
+               <%= submit_tag "Search", name:nil, class: "btn btn-primary"%>
+         </div>
+    </div>
+      
+
+    
+    <% end %>
+    </div>
+ 

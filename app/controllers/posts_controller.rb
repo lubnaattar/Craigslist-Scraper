@@ -6,6 +6,14 @@ class PostsController < ApplicationController
   def index
     #@posts = Post.all
     @posts = Post.paginate(:page => params[:page], :per_page => 40)
+
+    @posts = @posts.where(year: params["year"]) if params["year"].present?
+    @posts = @posts.where(price: params["price"]) if params["price"].present?
+
+    @posts = @posts.where(fuel_vehicle: params["fuel_vehicle"]) if params["fuel_vehicle"].present?
+    @posts = @posts.where(make_vehicle: params["make_vehicle"]) if params["make_vehicle"].present?
+    @posts = @posts.where(model_vehicle: params["model_vehicle"]) if params["model_vehicle"].present?
+
   end
 
   # GET /posts/1
@@ -72,5 +80,8 @@ class PostsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit(:heading, :body, :price, :neighborhood, :external_url, :timestamp)
+    end
+
+    def home
     end
 end

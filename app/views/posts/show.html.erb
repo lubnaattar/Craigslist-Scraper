@@ -25,6 +25,15 @@
   <p><strong>Drive : </strong><%= @post.drive %></p>
   <p><strong>Year : </strong><%= @post.year %></p>
   <p><strong>Flagged Status : </strong><%= @post.flagged_status %></p>
+   <p><strong>Fuel : </strong><%= @post.fuel_vehicle %></p>
+   <p><strong>Make : </strong><%= @post.make_vehicle %></p>
+   <p><strong>Model : </strong><%= @post.model_vehicle %></p>
+   <p><strong>Title Status : </strong><%= @post.title_status %></p>
+   <p><strong>Transmission : </strong><%= @post.transmission %></p>
+   <p><strong>Rating : </strong><%= @post.rating %></p>
+   <p><strong>Mileage : </strong><%= @post.mileage %></p>
+   <p><strong>Source : </strong><%= @post.account_id %></p>
+   <p><strong>Location : </strong><%= @post.source_map_google %></p>
   <% @images.each do |image| %>
       <%= image_tag image.url, class: "thumbnail" %>
     <% end %>

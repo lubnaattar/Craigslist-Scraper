@@ -13,7 +13,7 @@ namespace :scrapper do
 	# Specify request  parameters for anchor url\
 	anchor_params = {
 		auth_token: auth_token,
-		timestamp:1426853520#1426420800 #1426377600
+		timestamp:1428969600#1426420800 #1426377600
 	}
 	#1985469445
 	anchor_uri = URI.parse(anchor_url)
@@ -46,10 +46,10 @@ namespace :scrapper do
 	# Display results to screen
 	# this displays ll data in terminal
 	# puts results
-	# puts JSON.pretty_generate result
+	#puts JSON.pretty_generate result
 	# puts JSON.pretty_generate result["postings"]
-	 puts JSON.pretty_generate result["postings"].first
-	 puts JSON.pretty_generate result["postings"].second
+	 #puts JSON.pretty_generate result["postings"].first
+	 #puts JSON.pretty_generate result["postings"].second
 	 
 	# puts JSON.pretty_generate result["postings"].first["heading"] --> this will give error cos output need to be displayed in string
 
@@ -66,22 +66,35 @@ namespace :scrapper do
 
 	  # Create new Post
 	  	@post = Post.new
-		
+			
 	      @post.heading = posting["heading"]
 	      @post.body = posting["body"]
 	      @post.price = posting["price"]
 	      #@post.neighborhood = posting["location"]["locality"]
 	      @post.external_url = posting["external_url"]
-	      @post.year = posting["annotations"]["year"]	if posting["annotations"]["year"].present?
-	      @post.phone = posting["annotations"]["phone"] if posting["annotations"]["phone"].present? 
+	      @post.year = posting["annotations"]["year"] 	if posting["annotations"]["year"].present?
+	      @post.phone = posting["annotations"]["phone"]  if posting["annotations"]["phone"].present? 
 	      @post.paint_color = posting["annotations"]["paint_color"] if posting["annotations"]["paint_color"].present?
-	      @post.paint_color = posting["annotations"]["drive"] if posting["annotations"]["drive"].present?
-	       @post.flagged_status = posting["flagged_status"] if posting["flagged_status"].present?
+	      @post.drive = posting["annotations"]["drive"] if posting["annotations"]["drive"].present?
+	      @post.flagged_status = posting["flagged_status"] if posting["flagged_status"].present?
+	      @post.fuel_vehicle = posting["annotations"]["fuel"] if posting["annotations"]["fuel"].present?
+	      @post.model_vehicle = posting["annotations"]["model"] if posting["annotations"]["model"].present?
+	      @post.make_vehicle = posting["annotations"]["make"] if posting["annotations"]["make"].present?
+	      @post.title_status = posting["annotations"]["title_status"] if posting["annotations"]["title_status"].present?
+	      @post.fuel_vehicle = posting["annotations"]["fuel"] if posting["annotations"]["fuel"].present?
+	      @post.model_vehicle = posting["annotations"]["model"] if posting["annotations"]["model"].present?
+	      @post.make_vehicle = posting["annotations"]["make"] if posting["annotations"]["make"].present?
+	      @post.title_status = posting["annotations"]["title_status"] if posting["annotations"]["title_status"].present?
+	      @post.transmission = posting["annotations"]["transmission"] if posting["annotations"]["transmission"].present?
+	      @post.mileage = posting["annotations"]["mileage"] if posting["annotations"]["mileage"].present?
+	      @post.account_id = posting["annotations"]["source_account"] if posting["annotations"]["source_account"].present?
+	      @post.isDuplicate = 0 ## logiccc #posting["annotations"]["source_account"] if posting["annotations"]["source_account"].present?
+	      @post.source_map_google  =  posting["annotations"]["source_map_google"] if posting["annotations"]["source_map_google"].present?
 	     
 	      # @post.state = posting["location"]["state"]
 	      # @post.city = posting["location"]["city"]
 	      # @post.zipcode = posting["location"]["zipcode"]
-	       @post.neighborhood =Location.find_by(code: posting["location"]["locality"]).try(:shortName)
+	      @post.neighborhood =Location.find_by(code: posting["location"]["locality"]).try(:shortName)
 	      @post.state = "California"
 	      @post.city =Location.find_by(code: posting["location"]["city"]).try(:shortName)
 	      @post.zipcode =Location.find_by(code: posting["location"]["zipcode"]).try(:shortName)
@@ -114,6 +127,9 @@ namespace :scrapper do
 
 
 	  # Save Post
+	  ### need logic
+	    @post.rating = Random.new.rand(1..5) 
+	     
 	   @post.save
 	   posting["images"].each do |image|
       @image = Image.new
@@ -173,12 +189,11 @@ namespace :scrapper do
 	  end
 	end
 
-	desc "try argument"
-	task argument: :environment  do
-		###rake scrapper:argument level='zipcode'
-		my_level = ENV['level']
-		puts my_level
-	end
+	desc "Destroy All Locations"
+  		task destroy_all_locations: :environment do
+  		Location.destroy_all
+  	end
+
 end
 
 
