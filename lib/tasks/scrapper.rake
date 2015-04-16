@@ -90,7 +90,7 @@ namespace :scrapper do
 	      @post.account_id = posting["annotations"]["source_account"] if posting["annotations"]["source_account"].present?
 	      @post.isDuplicate = 0 ## logiccc #posting["annotations"]["source_account"] if posting["annotations"]["source_account"].present?
 	      @post.source_map_google  =  posting["annotations"]["source_map_google"] if posting["annotations"]["source_map_google"].present?
-	     
+	       @post.created_date = posting["timestamp"]
 	      # @post.state = posting["location"]["state"]
 	      # @post.city = posting["location"]["city"]
 	      # @post.zipcode = posting["location"]["zipcode"]

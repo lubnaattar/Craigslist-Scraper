@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414223443) do
+ActiveRecord::Schema.define(version: 20150416093854) do
 
   create_table "images", force: true do |t|
     t.text     "url"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20150414223443) do
     t.string   "transmission"
     t.string   "account_id"
     t.string   "source_map_google"
+    t.string   "created_date"
   end
 
 end

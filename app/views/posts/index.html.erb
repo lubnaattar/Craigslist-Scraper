@@ -8,23 +8,23 @@
     <thead>
       <tr>
         <th class="center">Preview</th>
-         <th class="center" width="45%">Heading</th>
+         <th class="center" width="35%">Heading</th>
         <!--<th>Body</th>-->
         <th class="center">Price</th>
         <th class="center">City</th>
-        <th class="center">Neighborhood</th>
+   <!--      <th class="center">Neighborhood</th>
         <th class="center">Zip</th>
         <th class="center">Phone</th>
         <th class="center">Drive</th>
-        <th class="center">Year</th>
-        <th class="center">Color</th>
+    -->     <th class="center">Year</th>
+   <!--      <th class="center">Color</th>
         <th class="center">Fuel </th>
-        <th class="center">Make </th>
+    -->     <th class="center">Make </th>
         <th class="center">Model </th>
-        <th class="center">Title </th>
+   <!--      <th class="center">Title </th>
         <th class="center">Transmission </th>
         <th class="center">Mileage </th>
-        <!--<th>External url</th>-->
+    -->     <!--<th>External url</th>-->
          <th>Timestamp</th>
         <th>Last Updated</th> 
         
@@ -38,7 +38,7 @@
           <td width="7%" height="80px">
           <%= link_to post_path(post) do %>
        <% if post.images.empty? %>
-          <%= image_tag "{YOUR_DEFAULT_IMAGE}", class: "thumbnail" %>
+          <%= image_tag "http://www.countrytravelmart.com/images/car-default.png", class: "thumbnail" %>
         <% else %>
           <%= image_tag post.images.first.url, class: "thumbnail" %>
         <% end %>
@@ -48,23 +48,24 @@
           <!--<td><%= post.body %></td>-->
           <td class="center" style="vertical-align:middle"><%= number_to_currency(post.price, precision:0) %></td>
           <td class="center" style="vertical-align:middle"><%= post.city %></td>
-          <td class="center" style="vertical-align:middle"><%= post.neighborhood %></td>
+        <!--   <td class="center" style="vertical-align:middle"><%= post.neighborhood %></td>
           <td class="center" style="vertical-align:middle"><%= post.zipcode %></td>
           <td class="center" style="vertical-align:middle"><%= post.phone %></td>
           <td class="center" style="vertical-align:middle"><%= post.drive %></td>
-          <td class="center" style="vertical-align:middle"><%= post.year %></td>
-          <td class="center" style="vertical-align:middle"><%= post.paint_color %></td>
+         -->  <td class="center" style="vertical-align:middle"><%= post.year %></td>
+         <!--  <td class="center" style="vertical-align:middle"><%= post.paint_color %></td>
           <td class="center" style="vertical-align:middle"><%= post.fuel_vehicle %></td>
-          <td class="center" style="vertical-align:middle"><%= post.make_vehicle %></td>
+          --> <td class="center" style="vertical-align:middle"><%= post.make_vehicle %></td>
           <td class="center" style="vertical-align:middle"><%= post.model_vehicle %></td>
-          <td class="center" style="vertical-align:middle"><%= post.title_status %></td>
+         <!--  <td class="center" style="vertical-align:middle"><%= post.title_status %></td>
           <td class="center" style="vertical-align:middle"><%= post.transmission %></td>          
           <td class="center" style="vertical-align:middle"><%= post.mileage %></td>
-          
+          --> 
           
           <!--<td><%= post.external_url %></td>-->
-           <td><%= Time.at(post.timestamp.to_i) %></td>
-          <td><%= "#{time_ago_in_words(Time.at(post.timestamp.to_i))} ago" %></td>
+           <td><%= Time.at(post.created_date.to_i) %></td>
+
+          <td><%= "#{time_ago_in_words(Time.at(post.created_date.to_i))} ago" %></td>
            <!--<td><%= link_to 'Show', post %></td>
           <td><%= link_to 'Edit', edit_post_path(post) %></td>
           <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->

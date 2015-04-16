@@ -34,9 +34,18 @@
    <p><strong>Mileage : </strong><%= @post.mileage %></p>
    <p><strong>Source : </strong><%= @post.account_id %></p>
    <p><strong>Location : </strong><%= @post.source_map_google %></p>
+
+
+
+
+
+
+<div class="carousel">
+
   <% @images.each do |image| %>
       <%= image_tag image.url, class: "thumbnail" %>
     <% end %>
+    </div>
   <p>
     <strong>External url : </strong>
     <%= @post.external_url %>
@@ -44,7 +53,7 @@
 
   <p>
     <strong>Timestamp : </strong>
-    <%= @post.timestamp %>
+    <%= Time.at(@post.created_date.to_i) %>
   </p>
 
   <%= link_to 'Edit', edit_post_path(@post) %> |
