@@ -34,7 +34,7 @@
 
     <tbody>
       <% @posts.each do |post| %>
-        <tr style="border:<%= post.flagged_status==1? "red" : "white" %>;" >
+        <tr style="background:<%= post.flagged_status==1? "#ea9b8d" : "" %>;" >
           <td width="7%" height="80px">
           <%= link_to post_path(post) do %>
        <% if post.images.empty? %>
