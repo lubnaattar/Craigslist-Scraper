@@ -8,11 +8,22 @@ class PostsController < ApplicationController
     @posts = Post.paginate(:page => params[:page], :per_page => 40)
 
     @posts = @posts.where(year: params["year"]) if params["year"].present?
-    @posts = @posts.where(price: params["price"]) if params["price"].present?
+    @posts = @posts.where("city like ?", "%#{params["city"]}%") if params["city"].present?
 
-    @posts = @posts.where(fuel_vehicle: params["fuel_vehicle"]) if params["fuel_vehicle"].present?
+    @posts = @posts.where("price > ?", params["min_price"]) if params["min_price"].present?
+    @posts = @posts.where("price < ?", params["max_price"]) if params["max_price"].present?
+
+    @posts = @posts.where("milleage > ?", params["min_milleage"]) if params["min_milleage"].present?
+    @posts = @posts.where("milleage < ?", params["max_milleage"]) if params["max_milleage"].present?
+
     @posts = @posts.where(make_vehicle: params["make_vehicle"]) if params["make_vehicle"].present?
     @posts = @posts.where(model_vehicle: params["model_vehicle"]) if params["model_vehicle"].present?
+    q = "%#{params["heading"]}%"
+    @posts = @posts.where("heading like ? or body like ? or fuel_vehicle like ?  or city like ? or neighborhood like ?  or paint_color like ? or title_status like ? or transmission like ? ",q,q,q,q,q,q,q,q) if params["heading"].present?
+    @posts = @posts.order(:year)
+    @posts = @posts.order(:rating)
+    @posts = @posts.order(:created_date).reverse_order
+
 
   end
 

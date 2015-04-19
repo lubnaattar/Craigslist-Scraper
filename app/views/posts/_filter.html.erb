@@ -1,55 +1,62 @@
 <div class="filter">
-    <%= form_tag posts_path, method: :get do %>
+  <%= form_tag posts_path, method: :get do %>
 
-     <div class ="row">
-       <div class="col-md-2">
-            <div class = "row">
-            <%= label_tag :year %>
-            </div>
-            <div class = "row">
-             <%= text_field_tag :year, params[:year], class: "form-control input-sm" %>
-             </div>
-        </div>
-            <!--<%= text_field_tag :year%> -->
-       
-       <div class="col-md-2">
-                <div class= "row"> <%= label_tag :price %> </div>    
-               <div class="row"> <%= text_field_tag :price, params["price"], class: "form-control input-sm" %> </div>    
-        </div>
-        
-        <div class="col-md-2">
-              <div class="row"> <%= label_tag :fuel_vehicle %>  </div>  
-              <div class="row">
-                     <%= text_field_tag :fuel_vehicle, params["fuel_vehicle"], class: "form-control input-sm" %>
-          </div>    
-        </div>
-        
-        <div class="col-md-2">
-               <div class="row">  <%= label_tag :make_vehicle %>   </div>  
-               <div class="row">
-                     <%= text_field_tag :make_vehicle, params["make_vehicle"], class: "form-control input-sm" %>
-          </div>   
-        </div>
-        
-
-        <div class="col-md-2">
-                <div class="row"> <%= label_tag :model_vehicle %>  </div>  
-                 <div class="row"> <%= text_field_tag :model_vehicle, params["model_vehicle"], class: "form-control input-sm" %> </div>    
-        </div>
-        
-     </div>
-
-    
-     <br/>
-     <div class="row">
-     <div class="col-md-2">
-               <%= submit_tag "Search", name:nil, class: "btn btn-primary"%>
-         </div>
-     </div>
-    
-      
-
-    
-    <% end %>
+  <div class ="row">
+    <div class="col-md-2">
+      <div class = "row">
+        <%= label_tag :year %>
+      </div>
+      <div class = "row">
+        <%= select_tag(:year, options_from_collection_for_select(Post.select(:year).uniq.order(:year).reverse_order, :year, :year, params[:year]), { include_blank: true ,class: "form-control input-sm" }) %>
+      </div>
+      <div class = "row">
+        <%= label_tag :City %>
+      </div>
+      <div class = "row">
+        <%= select_tag(:city, options_from_collection_for_select(Post.select(:city).uniq.order(:city), :city, :city, params[:city]), { include_blank: true ,class: "form-control input-sm" }) %>
+      </div>
     </div>
- 
+    <!--<%= text_field_tag :year%> -->
+
+    <div class="col-md-2">
+      <div class= "row"> <%= label_tag :min_price %> </div>
+      <div class="row"> <%= text_field_tag :min_price, params[:min_price], class: "form-control input-sm", placeholder: "minimum" %> </div>
+      <div class= "row"> <%= label_tag :max_price  %> </div>
+      <div class="row"> <%= text_field_tag :max_price, params[:max_price], class: "form-control input-sm" ,placeholder: "maximum" %> </div>
+
+    </div>
+
+    <div class="col-md-2">
+      <div class= "row"> <%= label_tag :min__milleage %> </div>
+      <div class="row"> <%= text_field_tag :min_milleage, params[:min_milleage], class: "form-control input-sm", placeholder: "minimum" %> </div>
+      <div class= "row"> <%= label_tag :max_milleage %> </div>
+      <div class="row"> <%= text_field_tag :max_milleage, params[:max_milleage], class: "form-control input-sm" ,placeholder: "maximum"%> </div>
+
+    </div>
+
+    <div class="col-md-2">
+      <div class="row">  <%= label_tag :make %>   </div>
+      <div class="row">  <%= text_field_tag :make_vehicle, params["make_vehicle"], class: "form-control input-sm" %>          </div>
+      <div class="row"> <%= label_tag :model %>  </div>
+      <div class="row"> <%= text_field_tag :model_vehicle, params["model_vehicle"], class: "form-control input-sm" %> </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="row"> <%= label_tag :general %>   </div>
+      <div class="row"> <%= text_field_tag :heading, params["heading"], class: "form-control input-sm" %> </div>
+    </div>
+  </div>
+
+
+  <br/>
+  <div class="row">
+    <div class="col-md-2">
+      <%= submit_tag "Search", name:nil, class: "btn btn-primary"%>
+    </div>
+  </div>
+
+
+
+
+  <% end %>
+</div>
