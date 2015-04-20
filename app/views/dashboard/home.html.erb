@@ -1,2 +1,34 @@
 <h1>Dashboard</h1>
 <p>Get you recent trendsss.........</p>
+<%= form_tag posts_path, method: :get do %>
+<table>
+<% @posts.each do |city , count_all| %>
+
+<tr>
+
+ <td class="center" style="vertical-align:middle">
+
+    <%= city %> ---- <%= count_all %>
+
+   </td>
+</tr>
+<% end %>
+
+</table>
+----------------------------
+<table>
+<% @posts1.each do |year , count_all| %>
+
+<tr>
+
+ <td class="center" style="vertical-align:middle">
+
+    <%= year %> ---- <%= count_all %>
+
+   </td>
+</tr>
+<% end %>
+
+</table>
+
+<% end %>

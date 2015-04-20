@@ -50,13 +50,13 @@ namespace :scrapper do
 	# puts JSON.pretty_generate result["postings"]
 	 #puts JSON.pretty_generate result["postings"].first
 	 #puts JSON.pretty_generate result["postings"].second
-	 
+
 	# puts JSON.pretty_generate result["postings"].first["heading"] --> this will give error cos output need to be displayed in string
 
 	# puts result["postings"].first["heading"] # dis output as string
 	# puts result["postings"].first["body"] # dis
 	# puts result["postings"].second["location"]["locality"] # dis
-	
+
 	# Saving outpout to file
 	# output = File.open( "outputfile.json","w" )
 	# output << result
@@ -66,14 +66,14 @@ namespace :scrapper do
 
 	  # Create new Post
 	  	@post = Post.new
-			
+
 	      @post.heading = posting["heading"]
 	      @post.body = posting["body"]
 	      @post.price = posting["price"]
 	      #@post.neighborhood = posting["location"]["locality"]
 	      @post.external_url = posting["external_url"]
-	      @post.year = posting["annotations"]["year"] 	if posting["annotations"]["year"].present?
-	      @post.phone = posting["annotations"]["phone"]  if posting["annotations"]["phone"].present? 
+	      @post.year = posting["annotations"]["year"]  	if posting["annotations"]["year"].present?
+	      @post.phone = posting["annotations"]["phone"]  if posting["annotations"]["phone"].present?
 	      @post.paint_color = posting["annotations"]["paint_color"] if posting["annotations"]["paint_color"].present?
 	      @post.drive = posting["annotations"]["drive"] if posting["annotations"]["drive"].present?
 	      @post.flagged_status = posting["flagged_status"] if posting["flagged_status"].present?
@@ -90,7 +90,7 @@ namespace :scrapper do
 	      @post.account_id = posting["annotations"]["source_account"] if posting["annotations"]["source_account"].present?
 	      @post.isDuplicate = 0 ## logiccc #posting["annotations"]["source_account"] if posting["annotations"]["source_account"].present?
 	      @post.source_map_google  =  posting["annotations"]["source_map_google"] if posting["annotations"]["source_map_google"].present?
-	       @post.created_date = posting["timestamp"]
+	      @post.created_date = posting["timestamp"]
 	      # @post.state = posting["location"]["state"]
 	      # @post.city = posting["location"]["city"]
 	      # @post.zipcode = posting["location"]["zipcode"]
@@ -98,7 +98,7 @@ namespace :scrapper do
 	      @post.state = "California"
 	      @post.city =Location.find_by(code: posting["location"]["city"]).try(:shortName)
 	      @post.zipcode =Location.find_by(code: posting["location"]["zipcode"]).try(:shortName)
-	      
+
 
       	 # @post.id = posting["id"]
 		#  @post.account_id = posting["account_id"]
@@ -128,13 +128,13 @@ namespace :scrapper do
 
 	  # Save Post
 	  ### need logic
-	    @post.rating = Random.new.rand(1..5) 
-	     
+	    @post.rating = Random.new.rand(1..5)
+
 	   @post.save
 	   posting["images"].each do |image|
       @image = Image.new
       @image.url = image["full"]
-      @image.post_id = @post.id 
+      @image.post_id = @post.id
       @image.save
 
 		end
@@ -195,5 +195,3 @@ namespace :scrapper do
   	end
 
 end
-
-

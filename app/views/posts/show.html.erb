@@ -1,68 +1,94 @@
-<div class="container">
-  <p id="notice"><%= notice %></p>
+<!-- <h1>Listing posts</h1>
+ -->
+   <div class="container-fluid">
 
-  <p>
-    <strong>Heading : </strong>
-    <%= @post.heading %>
-  </p>
+    <%= render 'filter' %>
 
-  <p>
-    <strong>Body : </strong>
-    <%= @post.body %>
-  </p>
+    <table class="table table-hover table-condensed">
+    <thead>
+      <tr>
+        <th class="center">Preview</th>
+         <th class="center" width="27%">Heading</th>
+        <!--<th>Body</th>-->
+        <th class="center">Price</th>
+        <th class="center">City</th>
+         <th class="center">Neighborhood</th>
+         <!--<th class="center">Zip</th>
+        <th class="center">Phone</th>
+        <th class="center">Drive</th>
+    -->     <th class="center">Year</th>
+   <!--      <th class="center">Color</th>
+        <th class="center">Fuel </th>
+    -->     <th class="center">Make </th>
+        <th class="center">Model </th>
+   <!--      <th class="center">Title </th>
+        <th class="center">Transmission </th>
+        <th class="center">Mileage </th>
+    -->     <!--<th>External url</th>
+    <th class="center">Timestamp</th>-->
+    <th class="center">Last Updated</th>
+    <th class="center">Rating </th>
 
-  <p>
-    <strong>Price : </strong>
-    <%= @post.price %>
-  </p>
+        <!--<th colspan="3"></th>-->
+      </tr>
+    </thead>
 
-  <p><strong>State : </strong><%= @post.state %></p>
-  <p><strong>City : </strong><%= @post.city %></p>
-  <p><strong>Neighbourhood : </strong><%= @post.neighborhood %></p>
-  <p><strong>Zip : </strong><%= @post.zipcode %></p>
-  <p><strong>Phone : </strong><%= @post.phone %></p>
-  <p><strong>Color : </strong><%= @post.paint_color %></p>
-  <p><strong>Drive : </strong><%= @post.drive %></p>
-  <p><strong>Year : </strong><%= @post.year %></p>
-  <p><strong>Flagged Status : </strong><%= @post.flagged_status %></p>
-   <p><strong>Fuel : </strong><%= @post.fuel_vehicle %></p>
-   <p><strong>Make : </strong><%= @post.make_vehicle %></p>
-   <p><strong>Model : </strong><%= @post.model_vehicle %></p>
-   <p><strong>Title Status : </strong><%= @post.title_status %></p>
-   <p><strong>Transmission : </strong><%= @post.transmission %></p>
-   <p><strong>Rating : </strong><%= @post.rating %></p>
-   <p><strong>Mileage : </strong><%= @post.mileage %></p>
-   <p><strong>Source : </strong><%= @post.account_id %></p>
-   <p><strong>Location : </strong><%= @post.source_map_google %></p>
-   <iframe
-  width="300"
-  height="300"
-  frameborder="0" style="border:0"
-  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCwYdOjvM_8L2VrtMKM3JnrAg-vQ1rqYBc/
-  &q=loc%3A+%34%34%32+Firebird+Ln+%31%32%34+San+Marcos+CA+US&zoom=14">
-</iframe>
+    <tbody>
+      <% @posts.each do |post| %>
+        <tr style="background:<%= post.flagged_status==1? "#f1dae1" : "" %>;" >
+          <td width="7%" height="80px">
+          <%= link_to post_path(post) do %>
+       <% if post.images.empty? %>
+          <%= image_tag "http://www.countrytravelmart.com/images/car-default.png", class: "thumbnail" %>
+        <% else %>
+          <%= image_tag post.images.first.url, class: "thumbnail" %>
+        <% end %>
+        <% end %>
+      </td>
+          <td style="vertical-align:middle"><%= link_to post.heading, post %></td>
+          <!--<td><%= post.body %></td>-->
+          <td class="center" style="vertical-align:middle"><%= number_to_currency(post.price, precision:0) %></td>
+          <td class="center" style="vertical-align:middle"><%= post.city %></td>
+           <td class="center" style="vertical-align:middle"><%= post.neighborhood %></td>
+        <!--  <td class="center" style="vertical-align:middle"><%= post.zipcode %></td>
+          <td class="center" style="vertical-align:middle"><%= post.phone %></td>
+          <td class="center" style="vertical-align:middle"><%= post.drive %></td>
+         -->  <td class="center" style="vertical-align:middle"><%= post.year %></td>
+         <!--  <td class="center" style="vertical-align:middle"><%= post.paint_color %></td>
+          <td class="center" style="vertical-align:middle"><%= post.fuel_vehicle %></td>
+          --> <td class="center" style="vertical-align:middle"><%= post.make_vehicle %></td>
+          <td class="center" style="vertical-align:middle"><%= post.model_vehicle %></td>
+         <!--  <td class="center" style="vertical-align:middle"><%= post.title_status %></td>
+          <td class="center" style="vertical-align:middle"><%= post.transmission %></td>
+          <td class="center" style="vertical-align:middle"><%= post.mileage %></td>
+          -->
 
+          <!--<td><%= post.external_url %></td>
+           <td class="center" style="vertical-align:middle"><%= Time.at(post.created_date.to_i) %></td>
+         -->
+          <td class="center" style="vertical-align:middle"><%= "#{time_ago_in_words(Time.at(post.created_date.to_i))} ago" %></td>
+           <!--<td><%= link_to 'Show', post %></td>
+          <td><%= link_to 'Edit', edit_post_path(post) %></td>
+          <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+          <td class="center" style="vertical-align:middle"> <div class="star-rating" data-score= <%= post.rating %> /></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <!-- <%= will_paginate @posts%>  will paginate without formatting -->
+   <%= will_paginate @posts,renderer: BootstrapPagination::Rails %> <!-- @posts should be same as controller-->
 
+  <br>
 
-
-
-
-<div class="carousel">
-
-  <% @images.each do |image| %>
-      <%= image_tag image.url, class: "thumbnail" %>
-    <% end %>
-    </div>
-  <p>
-    <strong>External url : </strong>
-    <%= @post.external_url %>
-  </p>
-
-  <p>
-    <strong>Timestamp : </strong>
-    <%= Time.at(@post.created_date.to_i) %>
-  </p>
-
-  <%= link_to 'Edit', edit_post_path(@post) %> |
-  <%= link_to 'Back', posts_path %>
+  <%= link_to 'New Post', new_post_path %>
 </div>
+<script>
+ $('.star-rating').raty({
+    path: 'https://s3.amazonaws.com/yelpdemo-test/stars',
+    readOnly:true,
+    score: function() {
+      return $(this).attr('data-score');
+    }
+  });
+
+</script>

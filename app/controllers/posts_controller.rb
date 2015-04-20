@@ -3,8 +3,16 @@ class PostsController < ApplicationController
 
   # GET /posts
   # GET /posts.json
+
+  def home
+    @posts = Post.all
+    # @posts = @posts.group(:city).count
+
+  end
+
   def index
-    #@posts = Post.all
+
+
     @posts = Post.paginate(:page => params[:page], :per_page => 40)
 
     @posts = @posts.where(year: params["year"]) if params["year"].present?
@@ -20,9 +28,10 @@ class PostsController < ApplicationController
     @posts = @posts.where(model_vehicle: params["model_vehicle"]) if params["model_vehicle"].present?
     q = "%#{params["heading"]}%"
     @posts = @posts.where("heading like ? or body like ? or fuel_vehicle like ?  or city like ? or neighborhood like ?  or paint_color like ? or title_status like ? or transmission like ? ",q,q,q,q,q,q,q,q) if params["heading"].present?
-    @posts = @posts.order(:year)
-    @posts = @posts.order(:rating)
-    @posts = @posts.order(:created_date).reverse_order
+    @posts = @posts.order("year DESC, rating DESC, price ASC, created_date DESC")
+    # @posts = @posts.order(:year)
+    # @posts = @posts.order(:rating)
+    # @posts = @posts.order(:created_date).reverse_order
 
 
   end
@@ -93,6 +102,5 @@ class PostsController < ApplicationController
       params.require(:post).permit(:heading, :body, :price, :neighborhood, :external_url, :timestamp)
     end
 
-    def home
-    end
+
 end
