@@ -74,6 +74,15 @@
         </tr>
       <% end %>
     </tbody>
+
+    <!--  -->
+    <div class="carousel" id="carousal">
+    <% @images.each do |image| %>
+        <%= image_tag image.url %>
+      <% end %>
+  </div>
+    <!--  -->
+
   </table>
   <!-- <%= will_paginate @posts%>  will paginate without formatting -->
    <%= will_paginate @posts,renderer: BootstrapPagination::Rails %> <!-- @posts should be same as controller-->
@@ -82,6 +91,7 @@
 
   <%= link_to 'New Post', new_post_path %>
 </div>
+
 <script>
  $('.star-rating').raty({
     path: 'https://s3.amazonaws.com/yelpdemo-test/stars',
@@ -91,4 +101,10 @@
     }
   });
 
+  $('#carousal').cycle({
+      fx:      'scrollRight',
+      next:   '#carousal',
+      timeout:  0,
+      easing:  'easeInOutBack'
+  });
 </script>
