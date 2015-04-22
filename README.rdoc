@@ -3,7 +3,16 @@
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
-Things you may want to cover:
+To run the program, please run the following commands in sequence:
+
+1. <tt> rake db:migrate </tt>
+2. <tt> rake scrapper:scrape_locations level='locality' </tt>
+3. <tt> rake scrapper:scrape_locations level='city' </tt>
+5. <tt> rake scrapper:scrape</tt>
+4. <tt> rake scrapper:scrape_locations level='zipcode' </tt>
+
+
+Things that we will cover:
 
 * Ruby version
 

@@ -13,7 +13,7 @@ class PostsController < ApplicationController
   def index
 
 
-    @posts = Post.paginate(:page => params[:page], :per_page => 40)
+    @posts = Post.order('timestamp DESC').paginate(:page => params[:page], :per_page => 40)
 
     @posts = @posts.where(year: params["year"]) if params["year"].present?
     @posts = @posts.where("city like ?", "%#{params["city"]}%") if params["city"].present?

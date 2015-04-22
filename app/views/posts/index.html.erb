@@ -38,11 +38,11 @@
         <tr style="background:<%= post.flagged_status==1? "#f1dae1" : "" %>;" >
           <td width="7%" height="80px">
           <%= link_to post_path(post) do %>
-       <% if post.images.empty? %>
+       <!-- <% if post.images.empty? %>
           <%= image_tag "http://www.countrytravelmart.com/images/car-default.png", class: "thumbnail" %>
         <% else %>
           <%= image_tag post.images.first.url, class: "thumbnail" %>
-        <% end %>
+        <% end %> -->
         <% end %>
       </td>
           <td style="vertical-align:middle"><%= link_to post.heading, post %></td>
