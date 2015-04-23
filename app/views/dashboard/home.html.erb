@@ -1,21 +1,69 @@
 <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"%>
 <%= javascript_include_tag "highcharts" %>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-<div id="containerbar" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
-<br/>
-<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
-
-
 <h1>Dashboard</h1>
-<p>Get you recent trendsss.........</p>
 
-<div id="orders_chart" style="width: 300px; height: 350px;"></div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <div id="postsLine" style="width: 400px; height: 500px;"></div>
+
+    </div>
+    <div class="col-md-6">
+      <div id="postsHBar" style="width: 400px; height: 500px;"></div>
+      <br/>
+    </div>
+  </div>
+</div>
 
 
+<!-- bubble need highcharts-more.js for bubble chart-->
+<div id="bubble" style="width: 400px; height: 400px;"></div>
 <br/>
 
 
+
+<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+<br/>
+
+
+
+<script>
+//  -- select count of vehicles
+$(function () {
+   new Highcharts.Chart({
+
+        chart: {
+            type: 'bubble',
+            zoomType: 'xy',
+            renderTo: 'bubble',
+        },
+
+        title: {
+            text: 'Highcharts Bubbles'
+        },
+
+        series: [{
+            data: [[10, 2011, 80],[20, 2012, 15],[30, 2013, 20],[40, 2014, 2],[50, 2014, 7]]
+        }, {
+            data: [[25, 10, 87], [2, 75, 59], [11, 54, 8], [86, 55, 93], [5, 3, 58], [90, 63, 44], [91, 33, 17], [97, 3, 56], [15, 67, 48], [54, 25, 81]]
+        }, {
+            data: [[47, 47, 21], [20, 12, 4], [6, 76, 91], [38, 30, 60], [57, 98, 64], [61, 17, 80], [83, 60, 13], [67, 78, 75], [64, 12, 10], [30, 77, 82]]
+        }]
+    });
+});
+</script>
+
+
+
+
+
+
+
+
+<!--
 <%= form_tag posts_path, method: :get do %>
 <table>
 <% @posts.each do |year , count_all| %>
@@ -24,14 +72,13 @@
 
  <td class="center" style="vertical-align:middle">
 
-    <%= year %> ---- <%= count_all %>
+    <%= year %>  <%= count_all %>
 
    </td>
 </tr>
 <% end %>
 
 </table>
-----------------------------
 <table>
 <% @posts1.each do |year , count_all| %>
 
@@ -39,35 +86,53 @@
 
  <td class="center" style="vertical-align:middle">
 
-    <%= year %> ---- <%= count_all %>
+    <%= year %>  <%= count_all %>
 
    </td>
 </tr>
 <% end %>
 
-</table>
+</table>  -->
 
 <script>
 
 $(function () {
   new Highcharts.Chart({
-    chart: { renderTo: 'orders_chart' },
-    title: { text: 'Orders by Day' },
+    chart: { renderTo: 'postsLine',backgroundColor:null },
+    title: { text: 'Posts per year according to models' },
     xAxis: {
-    	categories : <%= @posts.map{|p|p[0].to_i } %>
+
+categories : <%= raw @postsLine.map{|p| p.make_vehicle}.map(&:to_s) %>
 
     	 },
     yAxis: {
-      title: { text: 'Cities'}
+      title: { text: 'Number of posts'}
     },
     series: [{
-    	name: "Count",
-    	data: <%= @posts.map{|p|p[1] } %>
+    	name: "2015",
+    	data: <%= @postsLine2015.map{|p|p[1] } %>
 
-    },{
-    name: "year",
-    	data: <%= @posts.map{|p|p[0].to_i } %>
-    	}]
+    },
+    {
+        name: "2014",
+        data: <%= @postsLine2014.map{|p|p[1] } %>
+
+    },
+    {
+        name: "2013",
+        data: <%= @postsLine2013.map{|p|p[1] } %>
+
+    },
+    {
+        name: "2012",
+        data: <%= @postsLine2012.map{|p|p[1] } %>
+
+    },
+    {
+        name: "2011",
+        data: <%= @postsLine2011.map{|p|p[1] } %>
+
+    }]
 
   });
 });
@@ -118,7 +183,8 @@ $(function () {
   new Highcharts.Chart({
         chart: {
             type: 'bar',
-            renderTo: 'containerbar',
+            renderTo: 'postsHBar',
+            backgroundColor:null
 
         },
         title: {
@@ -128,10 +194,8 @@ $(function () {
             text: 'Source: Wikipedia.org'
         },
         xAxis: {
-            categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
-            title: {
-                text: null
-            }
+            categories: <%= raw @postsHBar.map{|p| p.make_vehicle}.map(&:to_s) %>,
+
         },
         yAxis: {
             min: 0,
@@ -168,16 +232,36 @@ $(function () {
             enabled: false
         },
        series: [{
-    	name: "Count",
-    	data: <%= @posts.map{|p|p[1] } %>
+        name: "Clean",
+        data: <%= @postsHBarClean.map{|p|p[1] } %>
 
-    },{
-    name: "year",
-    	data: <%= @posts.map{|p|p[0].to_i } %>
-    	}]
+    },
+    {
+        name: "Salvage",
+        data: <%= @postsHBarSalvage.map{|p|p[1] } %>
+
+    },
+    {
+        name: "Parts Only",
+        data: <%= @postsHBarPartsOnly.map{|p|p[1] } %>
+
+    },
+    {
+        name: "Rebuilt",
+        data: <%= @postsHBarRebuilt.map{|p|p[1] } %>
+
+    },
+    {
+        name: "Lien",
+        data: <%= @postsHBarLien.map{|p|p[1] } %>
+
+    }]
     });
 });
 
 </script>
+
+
+
 
 <% end %>

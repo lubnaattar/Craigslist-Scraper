@@ -25,14 +25,14 @@ namespace :scrapper do
 	puts anchor_result  # to_s converts to string
 
   # Grab data until up-to-date
-  loop do
+  #loop do
 
   	# Specify request  parameters for polling url
   	params = {
   	  auth_token: auth_token,
   	  # anchor:anchor_result["anchor"], # temp change #3/15/2015
       # The following achor retrieves values from database, which is currently '2055547657'
-      anchor: Anchor.first.value,
+      anchor: anchor_result["anchor"],#Anchor.first.value,
   	  source: "CRAIG",
   	  category_group: "VVVV",
   	  category: "VAUT",
@@ -147,10 +147,10 @@ namespace :scrapper do
 
   	end
 
-    Anchor.first.update(value: result["anchor"])
-    puts Anchor.first.value
-    break if results["postings"].empty?
-  end
+  #   Anchor.first.update(value: result["anchor"])
+  #   puts Anchor.first.value
+  #   break if results["postings"].empty?
+  # end
   end
 
   desc "Destroy All Posts"
