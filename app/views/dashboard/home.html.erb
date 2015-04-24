@@ -1,79 +1,212 @@
 <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"%>
 <%= javascript_include_tag "highcharts" %>
+
 <script src="http://code.highcharts.com/highcharts-more.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script src="http://www.jqueryscript.net/demo/Awesome-Tag-Cloud-Plugin-with-jQuery-Html5-Canvas-awesomeCloud/jquery.awesomeCloud-0.2.js"></script>
 
 <h1>Dashboard</h1>
+<br>
 
-<div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
-      <div id="postsLine" style="width: 400px; height: 500px;"></div>
 
+    <div class="col-md-6" id="post-images">
+      <div id="postsLine" style="width: 100%; height: 150%;"></div>
     </div>
-    <div class="col-md-6">
-      <div id="postsHBar" style="width: 400px; height: 500px;"></div>
-      <br/>
+
+    <div class="col-md-6" id="post-images">
+      <div id="postsHBar" style="width:100%; height:150%;"></div><br/>
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-6" id="post-images">
+      <div id="bubble" style="width: 100%; height: 150%;"></div>
+    </div>
+
+    <div class="col-md-6" id="post-images">
+      <div id="containerpie" style="width: 600px; height: 600px;"></div>
+    </div>
+
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-6" id="post-images">
+      <div id="containerCity" style="min-width: 600px; height: 600px; max-width: 600px; margin: 0 auto"></div>
+    </div>
+    <div class="col-md-6" id="post-images">
+      <div id="demo" class="wordcloud">
+        <% @postsTagCloud.each do |make_vehicle , count_all| %>
+          <span data-weight= <%= count_all.to_s %> > <%= make_vehicle %> </span>
+        <% end %>
+      </div>
     </div>
   </div>
-</div>
 
 
-<!-- bubble need highcharts-more.js for bubble chart-->
-<div id="bubble" style="width: 400px; height: 400px;"></div>
-<br/>
+  <!-- Line Chart -->
+  <script>
+  $(function () {
+    new Highcharts.Chart({
+      chart: {
+        renderTo: 'postsLine',
+        backgroundColor:null
+      },
+      title: {
+        text: 'Posts per Year According to Car Makes'
+      },
+      xAxis: {
+        categories : <%= raw @postsLine.map{|p| p.make_vehicle}.map(&:to_s) %>
+    	},
+      yAxis: {
+        title: { text: 'Number of posts'}
+      },
+      series: [{
+      	name: "2015",
+      	data: <%= @postsLine2015.map{|p|p[1] } %>
+      },
+      {
+        name: "2014",
+        data: <%= @postsLine2014.map{|p|p[1] } %>
+      },
+      {
+        name: "2013",
+        data: <%= @postsLine2013.map{|p|p[1] } %>
+      },
+      {
+        name: "2012",
+        data: <%= @postsLine2012.map{|p|p[1] } %>
+      },
+      {
+        name: "2011",
+        data: <%= @postsLine2011.map{|p|p[1] } %>
+      }]
+    });
+  });
+  </script>
 
 
-
-<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
-<br/>
-
+  <!-- Horizontal Bar Chart -->
+  <script>
+  $(function () {
+    new Highcharts.Chart({
+          chart: {
+              type: 'bar',
+              renderTo: 'postsHBar',
+              backgroundColor:null
+          },
+          title: {
+              text: 'Conditions of Most selling Cars'
+          },
+          subtitle: {
+              text: 'Source: CraigsList'
+          },
+          xAxis: {
+              categories: <%= raw @postsHBar.map{|p| p.make_vehicle}.map(&:to_s) %>,
+          },
+          yAxis: {
+              min: 0,
+              title: {
+                  text: 'Counts',
+                  align: 'high'
+              },
+              labels: {
+                  overflow: 'justify'
+              }
+          },
+          tooltip: {
+              valueSuffix: ' millions'
+          },
+          plotOptions: {
+              bar: {
+                  dataLabels: {
+                      enabled: true
+                  }
+              }
+          },
+          legend: {
+              layout: 'vertical',
+              align: 'right',
+              verticalAlign: 'top',
+              x: -40,
+              y: 100,
+              floating: true,
+              borderWidth: 1,
+              backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+              shadow: true
+          },
+          credits: {
+              enabled: false
+          },
+         series: [{
+          name: "Clean",
+          data: <%= @postsHBarClean.map{|p|p[1] } %>
+      },
+      {
+          name: "Salvage",
+          data: <%= @postsHBarSalvage.map{|p|p[1] } %>
+      },
+      {
+          name: "Parts Only",
+          data: <%= @postsHBarPartsOnly.map{|p|p[1] } %>
+      },
+      {
+          name: "Rebuilt",
+          data: <%= @postsHBarRebuilt.map{|p|p[1] } %>
+      },
+      {
+          name: "Lien",
+          data: <%= @postsHBarLien.map{|p|p[1] } %>
+      }]
+      });
+  });
+</script>
 
 
 <script>
-//  -- select count of vehicles
+// Bubble Chart
 $(function () {
    new Highcharts.Chart({
-
         chart: {
-            type: 'bubble',
+            type: 'scatter',
             zoomType: 'xy',
             renderTo: 'bubble',
+            backgroundColor : null
         },
-
         title: {
-            text: 'Highcharts Bubbles'
+            text: 'Post Counts, Frauds, Duplicates'
         },
-
         series: [{
-            data: [[10, 2011, 80],[20, 2012, 15],[30, 2013, 20],[40, 2014, 2],[50, 2014, 7]]
-        }, {
-            data: [[25, 10, 87], [2, 75, 59], [11, 54, 8], [86, 55, 93], [5, 3, 58], [90, 63, 44], [91, 33, 17], [97, 3, 56], [15, 67, 48], [54, 25, 81]]
-        }, {
-            data: [[47, 47, 21], [20, 12, 4], [6, 76, 91], [38, 30, 60], [57, 98, 64], [61, 17, 80], [83, 60, 13], [67, 78, 75], [64, 12, 10], [30, 77, 82]]
+          name: "fraud",
+          //data: <% @postsBubbleFraud %>
+          data: [[ 2011, 80],[ 2012,  15],[2013,  20],[2014,  50],[2015, 127]]
+        },
+        {
+          name: "count",
+          //data: <% @postsBubbleCount %>
+          data: [[ 2011, 231],[ 2012,  343],[2013,  545],[2014,  121],[2015, 656]]
+        },
+        {
+          name: "duplicates",
+          //data: <% @postsBubbleDuplicate %>
+          data: [[ 2011, 4],[ 2012,  1],[2013,  2],[2014,  6],[2015, 2]]
         }]
     });
 });
 </script>
 
 
-
-
-
-
-
-
 <!--
 <%= form_tag posts_path, method: :get do %>
 <table>
 <% @posts.each do |year , count_all| %>
-
 <tr>
-
  <td class="center" style="vertical-align:middle">
-
     <%= year %>  <%= count_all %>
-
    </td>
 </tr>
 <% end %>
@@ -81,76 +214,28 @@ $(function () {
 </table>
 <table>
 <% @posts1.each do |year , count_all| %>
-
 <tr>
-
  <td class="center" style="vertical-align:middle">
-
     <%= year %>  <%= count_all %>
-
    </td>
 </tr>
 <% end %>
-
 </table>  -->
 
-<script>
 
-$(function () {
-  new Highcharts.Chart({
-    chart: { renderTo: 'postsLine',backgroundColor:null },
-    title: { text: 'Posts per year according to models' },
-    xAxis: {
-
-categories : <%= raw @postsLine.map{|p| p.make_vehicle}.map(&:to_s) %>
-
-    	 },
-    yAxis: {
-      title: { text: 'Number of posts'}
-    },
-    series: [{
-    	name: "2015",
-    	data: <%= @postsLine2015.map{|p|p[1] } %>
-
-    },
-    {
-        name: "2014",
-        data: <%= @postsLine2014.map{|p|p[1] } %>
-
-    },
-    {
-        name: "2013",
-        data: <%= @postsLine2013.map{|p|p[1] } %>
-
-    },
-    {
-        name: "2012",
-        data: <%= @postsLine2012.map{|p|p[1] } %>
-
-    },
-    {
-        name: "2011",
-        data: <%= @postsLine2011.map{|p|p[1] } %>
-
-    }]
-
-  });
-});
-</script>
-
+<!-- Container Pie Chart -->
 <script type="text/javascript">
-
 $(function () {
   new Highcharts.Chart({
         chart: {
-        	renderTo: 'container',
+        	renderTo: 'containerpie',
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotShadow: false,
             backgroundColor: null
         },
         title: {
-            text: "Browser market shares at a specific website, 2014"
+            text: "Fraud Ads per 1000 in a Year"
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -171,97 +256,91 @@ $(function () {
         series: [{
             type: 'pie',
             name: 'make share',
-        	data: <%= @posts2.to_json.html_safe -%>
+        	data: <%= @postsFraudPie.to_json.html_safe -%>
         }]
      });
 });
-
 </script>
 
-<script>
+
+<!-- Pie Chart -->
+<script type="text/javascript">
 $(function () {
   new Highcharts.Chart({
         chart: {
-            type: 'bar',
-            renderTo: 'postsHBar',
-            backgroundColor:null
-
+          renderTo: 'containerCity',
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false,
+          backgroundColor: null
         },
         title: {
-            text: 'Historic World Population by Region'
-        },
-        subtitle: {
-            text: 'Source: Wikipedia.org'
-        },
-        xAxis: {
-            categories: <%= raw @postsHBar.map{|p| p.make_vehicle}.map(&:to_s) %>,
-
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Population (millions)',
-                align: 'high'
-            },
-            labels: {
-                overflow: 'justify'
-            }
+          text: "Highest Posting Traffic w.r.t Cities"
         },
         tooltip: {
-            valueSuffix: ' millions'
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
         },
         plotOptions: {
-            bar: {
-                dataLabels: {
-                    enabled: true
-                }
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: true,
+              format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+              style: {
+                  color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+              }
             }
+          }
         },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'top',
-            x: -40,
-            y: 100,
-            floating: true,
-            borderWidth: 1,
-            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-            shadow: true
-        },
-        credits: {
-            enabled: false
-        },
-       series: [{
-        name: "Clean",
-        data: <%= @postsHBarClean.map{|p|p[1] } %>
-
-    },
-    {
-        name: "Salvage",
-        data: <%= @postsHBarSalvage.map{|p|p[1] } %>
-
-    },
-    {
-        name: "Parts Only",
-        data: <%= @postsHBarPartsOnly.map{|p|p[1] } %>
-
-    },
-    {
-        name: "Rebuilt",
-        data: <%= @postsHBarRebuilt.map{|p|p[1] } %>
-
-    },
-    {
-        name: "Lien",
-        data: <%= @postsHBarLien.map{|p|p[1] } %>
-
-    }]
-    });
+        series: [{
+          type: 'pie',
+          name: 'make share',
+      	  data: <%= @postsCityPie.to_json.html_safe -%>
+        }]
+     });
 });
-
 </script>
 
 
+
+<!-- Cloud Tag -->
+<script>
+$(document).ready(function(){
+  $("#demo").awesomeCloud({
+    "size" : {
+        "<a href='http://www.jqueryscript.net/tags.php?/grid/'>grid</a>" : 16, // word spacing, smaller is more tightly packed
+        "factor" : 0, // font resize factor, 0 means automatic
+        "normalize" : false // reduces outliers for more attractive output
+    },
+    "color" : {
+        "background" : "rgba(255,255,255,0)", // background color, transparent by default
+        "start" : "#20f", // color of the smallest font, if options.color = "gradient""
+        "end" : "rgb(200,0,0)" // color of the largest font, if options.color = "gradient"
+    },
+    "options" : {
+        "color" : "random-dark", // random-light, random-dark, gradient
+        "rotationRatio" : 0.35, // 0 is all horizontal, 1 is all vertical
+        "printMultiplier" : 3, // set to 3 for nice printer output; higher numbers take longer
+        "sort" : "random" // highest, lowest or random
+    },
+    "font" : "'Times New Roman', Times, serif", //  the CSS font-family string
+    "shape" : "square" // circle, square, star or a theta function describing a shape
+  });
+});
+</script>
+
+<style type="text/css">
+.wordcloud {
+  border: 0px solid #036;
+  height: 7in;
+  margin: 0.5in auto;
+  padding: 0;
+  page-break-after: always;
+  page-break-inside: avoid;
+  width: 7in;
+}
+</style>
 
 
 <% end %>

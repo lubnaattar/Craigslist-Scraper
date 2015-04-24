@@ -3,16 +3,13 @@ class PostsController < ApplicationController
 
   # GET /posts
   # GET /posts.json
-
   def home
     @posts = Post.all
     # @posts = @posts.group(:city).count
-
   end
 
+
   def index
-
-
     @posts = Post.order('timestamp DESC').paginate(:page => params[:page], :per_page => 40)
 
     @posts = @posts.where(year: params["year"]) if params["year"].present?
@@ -32,9 +29,14 @@ class PostsController < ApplicationController
     # @posts = @posts.order(:year)
     # @posts = @posts.order(:rating)
     # @posts = @posts.order(:created_date).reverse_order
-
-
   end
+
+
+  # GETting Confidence Value
+  def confidence
+    #response = HTTParty.get("https://api.dandelion.eu/datatxt/nex/v1/text="+@post.body+"&$app_id=f374474a&$app_key=5fabe2f04bdfc346d276551c368080c5")
+  end
+
 
   # GET /posts/1
   # GET /posts/1.json
@@ -42,20 +44,22 @@ class PostsController < ApplicationController
     @images = @post.images
   end
 
+
   # GET /posts/new
   def new
     @post = Post.new
   end
 
+
   # GET /posts/1/edit
   def edit
   end
+
 
   # POST /posts
   # POST /posts.json
   def create
     @post = Post.new(post_params)
-
     respond_to do |format|
       if @post.save
         format.html { redirect_to @post, notice: 'Post was successfully created.' }
@@ -66,6 +70,7 @@ class PostsController < ApplicationController
       end
     end
   end
+
 
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
@@ -81,6 +86,7 @@ class PostsController < ApplicationController
     end
   end
 
+
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
@@ -90,6 +96,7 @@ class PostsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -101,6 +108,5 @@ class PostsController < ApplicationController
     def post_params
       params.require(:post).permit(:heading, :body, :price, :neighborhood, :external_url, :timestamp)
     end
-
 
 end

@@ -1,56 +1,143 @@
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
+<script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
+
+<p id="notice"><%= notice %>
+
 <div class="container">
-  <p id="notice"><%= notice %></p>
 
-  <p>
-    <strong>Heading : </strong>
-    <%= @post.heading %>
-  </p>
-
-  <p>
-    <strong>Body : </strong>
-    <%= @post.body %>
-  </p>
-
-  <p>
-    <strong>Price : </strong>
-    <%= @post.price %>
-  </p>
-
-  <p><strong>State : </strong><%= @post.state %></p>
-  <p><strong>City : </strong><%= @post.city %></p>
-  <p><strong>Neighbourhood : </strong><%= @post.neighborhood %></p>
-  <p><strong>Zip : </strong><%= @post.zipcode %></p>
-  <p><strong>Phone : </strong><%= @post.phone %></p>
-  <p><strong>Color : </strong><%= @post.paint_color %></p>
-  <p><strong>Drive : </strong><%= @post.drive %></p>
-  <p><strong>Year : </strong><%= @post.year %></p>
-  <p><strong>Flagged Status : </strong><%= @post.flagged_status %></p>
-   <p><strong>Fuel : </strong><%= @post.fuel_vehicle %></p>
-   <p><strong>Make : </strong><%= @post.make_vehicle %></p>
-   <p><strong>Model : </strong><%= @post.model_vehicle %></p>
-   <p><strong>Title Status : </strong><%= @post.title_status %></p>
-   <p><strong>Transmission : </strong><%= @post.transmission %></p>
-   <p><strong>Rating : </strong><div class="star-rating" data-score= <%= @post.rating %> ></div></p>
-   <p><strong>Mileage : </strong><%= @post.mileage %></p>
-   <p><strong>Source : </strong><%= @post.account_id %></p>
-   <p><strong>Location : </strong><%= @post.source_map_google %></p>
-   <div class="carousel" id="carousal">
-    <% @images.each do |image| %>
-        <%= image_tag image.url %>
-      <% end %>
+  <div class="header">
+      <h1>
+        <b><%= @post.heading %></b>
+      </h1>
+      <%= link_to @post.external_url, @post.external_url %>
   </div>
-  <p>
-    <strong>External url : </strong>
-    <%= @post.external_url %>
-  </p>
 
-  <p>
-    <strong>Timestamp : </strong>
-    <%= @post.timestamp %>
-  </p>
+  <div class="row">
 
-  <%= link_to 'Edit', edit_post_path(@post) %> |
-  <%= link_to 'Back', posts_path %>
+    <div class="col-md-7" id="post-images">
+      <% if @images.blank? %>
+        <%= image_tag "http://www.countrytravelmart.com/images/car-default.png", class: "thumbnail" %>
+      <% else %>
+        <div class="carousel" id="carousal" style="width:800px; margin:0 auto;">
+         <% @images.each do |image| %>
+           <%= image_tag image.url %>
+         <% end %>
+       <% end %>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="basic-info">
+        <h4>Basic Information</h4>
+
+        Price : <%= number_to_currency(@post.price, precision:0) %><br>
+        Last Updated : <%= "#{time_ago_in_words(Time.at(@post.created_date.to_i))} ago" %><br>
+
+        <% if @post.neighborhood.present? %>
+          State : <%= @post.state %><br>
+        <% end %>
+
+        <% if @post.neighborhood.present? %>
+          City : <%= @post.city %><br>
+        <% end %>
+
+        <% if @post.neighborhood.present? %>
+            Neighbourhood : <%= @post.neighborhood %><br>
+        <% end %>
+
+        <% if @post.zipcode.present? %>
+          Zip : <%= @post.zipcode %><br>
+        <% end %>
+
+        <% if @post.phone.present? %>
+          Phone : <%= @post.phone %><br>
+        <% end %>
+
+        <% if @post.paint_color.present? %>
+          Color : <%= @post.paint_color %><br>
+        <% end %>
+
+        <% if @post.drive.present? %>
+          Drive : <%= @post.drive %><br>
+        <% end %>
+
+        <% if @post.year.present? %>
+          Year : <%= @post.year %><br>
+        <% end %>
+
+        <% if @post.flagged_status.present? %>
+          Flagged Status : <%= @post.flagged_status %><br>
+        <% end %>
+
+        <% if @post.fuel_vehicle.present? %>
+          Fuel : <%= @post.fuel_vehicle %><br>
+        <% end %>
+
+        <% if @post.make_vehicle.present? %>
+          Make : <%= @post.make_vehicle %><br>
+        <% end %>
+
+        <% if @post.model_vehicle.present? %>
+          Model : <%= @post.model_vehicle %><br>
+        <% end %>
+
+        <% if @post.title_status.present? %>
+          Title Status : <%= @post.title_status %><br>
+        <% end %>
+
+        <% if @post.transmission.present? %>
+          Transmission : <%= @post.transmission %><br>
+        <% end %>
+
+        <% if @post.mileage.present? %>
+          Mileage : <%= @post.mileage %><br>
+        <% end %>
+
+        <% if @post.account_id.present? %>
+          Source : <%= @post.account_id %><br>
+        <% end %>
+
+        <% if @post.source_map_google.present? %>
+          Location : <%= link_to @post.source_map_google, @post.source_map_google %>
+        <% end %>
+
+        <br>
+        <!-- Addnig Confidence Value -->
+        <div class="boxed"><b>Confidence :
+        <%=
+            require 'uri'
+            require 'json'
+            # Creating the dynamic URI for API Call
+            myString = String("https://api.dandelion.eu/datatxt/nex/v1/?text="+@post.body+"&$app_id=f374474a&$app_key=5fabe2f04bdfc346d276551c368080c5")
+            # Encoding URI to understand special characters
+            encoded_url = URI.encode(myString)
+            # HTTParty enables the HTTP commands in ruby
+            response = HTTParty.get(URI.parse(encoded_url))
+            obj = JSON.parse(response.body)["annotations"]
+            arrayLength = obj.length
+            i=0
+            sum =0
+            while i < arrayLength do
+              @x = obj[i]["confidence"]
+              sum = sum + @x
+              i += 1
+            end
+            sum = sum / arrayLength
+            sum = sum.round(2) * 100
+          %></b></div><br>
+        </div>
+
+        <div class = "description">
+          <h4>Description</h4>
+          <%= @post.body %><br><br>
+          Rating : <div class="star-rating" data-score= <%= @post.rating %> ></div>
+        </div>
+        <%= link_to 'Back', posts_path %>
+
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -63,12 +150,9 @@
   });
 
   $('#carousal').cycle({
-      fx:      'scrollLeft',
-      next:   '#carousal',
-      timeout:  3000,
-      easing:  'easeInOutBack'
+    fx:      'scrollRight',
+    next:   '#right',
+    timeout:  3000,
+    easing:  'easeInOutBack'
   });
-
-
-
 </script>

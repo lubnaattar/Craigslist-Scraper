@@ -6,8 +6,8 @@ class DashboardController < ApplicationController
     #  @posts1 = Post.group(:year).count #year, #count_all
      @posts = Post.where("city like ?", "Anaheim").group(:year).count.to_a
      @posts1 = Post.group(:year).count.to_a #year, #count_all
-     @posts2 = Post.group(:city).count.to_a
-     @posts3 = Post.group(:make_vehicle).count.to_json
+     @postsCityPie = Post.group(:city).count.to_a
+     @postsTagCloud = Post.where("make_vehicle is not null and year >= ?", "2011").group(:make_vehicle).count.to_a
 
 
      #count_all, year, make_vehicle : line bar chart
@@ -28,6 +28,14 @@ class DashboardController < ApplicationController
 
   #   sql = "select distinct make_vehicle from posts where year >= '2011' and year is not null and and make_vehicle is not null"
   ##   records_array = ActiveRecord::Base.connection.execute(sql);
+
+     @postsFraudPie = Post.where("flagged_status = ?", 1).group(:city).count.to_a
+
+     ############# BUBBLE CHART
+     @postsBubbleFraud = Post.where("flagged_status = ? and year >= ? and year is not null", 1,"2011").group(:year).count.to_a
+     @postsBubbleDuplicate = Post.where("isDuplicate = ? and year >= ? and year is not null", 1,"2011").group(:year).count.to_a
+     @postsBubbleCount = Post.where(" year >= ? and year is not null","2011").group(:year).count.to_a
+
 
   end
 end

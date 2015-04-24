@@ -78,10 +78,7 @@
    <!-- <%= will_paginate @posts%>  will paginate without formatting -->
     <%= will_paginate @posts,renderer: BootstrapPagination::Rails %> <!-- @posts should be same as controller-->
 
-   <br>
-
-   <%= link_to 'New Post', new_post_path %>
- </div>
+</div>
  <script>
   $('.star-rating').raty({
      path: 'https://s3.amazonaws.com/yelpdemo-test/stars',

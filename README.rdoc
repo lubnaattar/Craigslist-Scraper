@@ -5,11 +5,15 @@ application up and running.
 
 To run the program, please run the following commands in sequence:
 
-1. <tt> rake db:migrate </tt>
-2. <tt> rake scrapper:scrape_locations level='locality' </tt>
-3. <tt> rake scrapper:scrape_locations level='city' </tt>
-5. <tt> rake scrapper:scrape</tt>
-4. <tt> rake scrapper:scrape_locations level='zipcode' </tt>
+1. <tt>bundle install</tt>
+2. <tt> rake db:migrate </tt>
+3. <tt> rake scrapper:scrape_locations level='locality' </tt>
+4. <tt> rake scrapper:scrape_locations level='city' </tt>
+5. <tt> rake scrapper:scrape_locations level='zipcode' </tt>
+6. <tt> rake scrapper:scrape</tt>
+
+Finally, run this query in SQllite DB Browser
+ <tt>UPDATE posts SET flagged_status = 1 WHERE year = 2015 AND id IN (56,90,117,121,167)</tt>
 
 
 Things that we will cover:
